@@ -51,3 +51,15 @@ exports.getCategory = (req, res) => {
         }
     })
 }
+exports.getCategory = (req, res) => {
+    Category.find({})
+    .exec((error, categories) => {
+        if(error) return res.status(400).json({error});
+        if(categories) {
+
+            const categoryList = createCategories(categories);
+
+            res.status(200).json({categoryList});
+        }
+    })
+}
