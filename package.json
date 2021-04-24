@@ -1,7 +1,7 @@
 {
   "name": "flipkart-clone-s",
   "version": "1.0.0",
-  "description": "This is backend of ecommerce flipkart clone server ",
+  "description": "This is backend of ecommerce flipkart clone servers ",
   "main": "index.js",
   "scripts": {
     "start": "nodemon ./src/index.server.js",
