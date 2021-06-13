@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 // const {validationResult} = require("express-validator")
 exports.signup = (req, res) => {
   
@@ -7,17 +8,18 @@ exports.signup = (req, res) => {
   // return res.status(400).json({errors: errors.array() })
 
 
-  User.findOne({ email: req.body.email }).exec((error, user) => {
+  User.findOne({ email: req.body.email }).exec(async(error, user) => {
     if (user)
       return res.status(400).json({
         message: "User already registered",
       });
     const { firstName, lastName, email, password } = req.body;
+    const hash_password =await bcrypt.hash(password, 10)
     const _user = new User({
       firstName,
       lastName,
       email,
-      password,
+      hash_password,
       username: Math.random().toString(),
     });
     _user.save((error, data) => {
