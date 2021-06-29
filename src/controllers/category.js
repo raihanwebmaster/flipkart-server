@@ -53,7 +53,56 @@ exports.getCategory = (req, res) => {
   });
 };
 
+exports.updateCategories = async (req, res) => {
+  const { _id, name, parentId, type } = req.body;
+  const updateCategories = [];
+  if (name instanceof Array) {
+    for (let i = 0; i < name.length; i++) {
+      const category = {
+        name: name[i],
+        type: type[i],
+      };
+      if (parentId[i] !== "") {
+        category.parentId = parentId[i];
+      }
+      const updateCategory = await Category.findOneAndUpdate(
+        { _id: _id[i] },
+        category,
+        { new: true }
+      );
+      updateCategories.push(updateCategory);
+    }
+    return res.status(201).json({ updateCategories: updateCategories });
+  } else {
+    const category = {
+      name,
+      type,
+    };
+    if (parentId !== "") {
+      category.parentId = parentId;
+    }
+    const updateCategory = await Category.findOneAndUpdate({ _id }, category, {
+      new: true,
+    });
+    return res.status(201).json({ updateCategory });
+  }
+};
 
-exports.updateCategories = (req, res) => {
-    res.status(200).json({body:req.body})
-}
+// exports.updateCategories = async(req, res) => {
+//   const {_id,name, parentId, type} = req.body;
+//   const updateCategories = [];
+//   if(name instanceof Array){
+//     for(let i = 0 ; i < name.length ; i++){
+//       const category ={
+//         name: name[i],
+//         type:type[i]
+//       };
+//       if(parentId !== ""){
+//         category.parentId = parentId[i];
+//       }
+//       const updateCategory = await Category.findOneAndUpdate({_id}, category,{new: true})
+//       updateCategories.push(updateCategory)
+//       return res.status(201).json({updateCategories})
+//     }
+//   }
+// }
